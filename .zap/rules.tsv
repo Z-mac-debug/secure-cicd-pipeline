@@ -1,0 +1,8 @@
+10020	FAIL	(Anti-clickjacking Header missing)
+10021	FAIL	(X-Content-Type-Options Header Missing)
+10038	FAIL	(Content Security Policy Header Not Set)
+10055	FAIL	(CSP misconfiguration)
+10063	FAIL	(Permissions Policy Header Not Set)
+90004	FAIL	(Insufficient Site Isolation Against Spectre)
+10049	IGNORE	(Storable and Cacheable Content - informational; API sends Cache-Control: no-store)
+10109	IGNORE	(Modern Web Application - informational)

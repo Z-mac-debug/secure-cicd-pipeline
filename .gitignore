@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# Scanner output
+*.sarif
+checkov/
+pip-audit.md
+sbom*.json
+image.tar
+report_*.html
+report_*.json
+report_*.md
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars

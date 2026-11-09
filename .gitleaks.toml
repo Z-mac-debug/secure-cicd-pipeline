@@ -1,0 +1,12 @@
+title = "secure-cicd-pipeline gitleaks config"
+
+# Start from the full built-in rule set, then add project-specific exceptions.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Generated reports and lock files are not sources of secrets"
+paths = [
+  '''(.*?)\.sarif$''',
+  '''sbom.*\.json$''',
+]
