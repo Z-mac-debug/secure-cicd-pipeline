@@ -5,6 +5,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7 # don't adopt brand-new releases straight away
     groups:
       actions:
         patterns: ["*"]
@@ -13,13 +15,19 @@ updates:
     directory: /app
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7 # don't adopt brand-new releases straight away
 
   - package-ecosystem: docker
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7 # don't adopt brand-new releases straight away
 
   - package-ecosystem: terraform
     directory: /terraform
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7 # don't adopt brand-new releases straight away

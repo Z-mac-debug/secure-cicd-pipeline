@@ -82,8 +82,8 @@ jobs:
             --error
 
       - name: Upload SARIF to code scanning
-        if: always()
-        continue-on-error: true # private repos need GitHub Advanced Security for code scanning
+        # Code scanning is free on public repos; private repos need GitHub Advanced Security.
+        if: always() && !github.event.repository.private
         uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
           sarif_file: semgrep.sarif
@@ -121,7 +121,12 @@ jobs:
           pip-audit -r app/requirements.txt --strict --desc on --format markdown --output pip-audit.md
           status=$?
           set -e
-          { echo "## pip-audit"; echo; if [ -s pip-audit.md ]; then cat pip-audit.md; else echo "No known vulnerabilities found."; fi; } >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "## pip-audit"; echo
+            if [ "$status" -ne 0 ] && [ ! -s pip-audit.md ]; then echo "pip-audit failed to run (exit $status) - see the job log.";
+            elif [ -s pip-audit.md ]; then cat pip-audit.md;
+            else echo "No known vulnerabilities found."; fi
+          } >> "$GITHUB_STEP_SUMMARY"
           exit $status
 
   iac:
@@ -156,11 +161,10 @@ jobs:
             --output-file-path console,checkov
 
       - name: Upload SARIF to code scanning
-        if: always()
-        continue-on-error: true
+        if: always() && !github.event.repository.private
         uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
-          sarif_file: checkov/results_sarif.sarif
+          sarif_file: checkov # directory; uploads every .sarif Checkov wrote
           category: checkov
 
   test:
@@ -227,8 +231,7 @@ jobs:
           exit-code: "0"
 
       - name: Upload SARIF to code scanning
-        if: always()
-        continue-on-error: true
+        if: always() && !github.event.repository.private
         uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
           sarif_file: trivy.sarif
